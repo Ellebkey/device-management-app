@@ -8,6 +8,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Computer, MoreVert } from "@mui/icons-material";
+import DeviceHeader from "./DeviceHeader";
 import DeviceFilterBar from "./DeviceFilterBar";
 import api from "../../providers/api";
 
@@ -23,7 +24,7 @@ const DeviceList = () => {
       try {
         const { data } = await api.get("/devices");
         // Simulate delay to mimic API response time
-        await new Promise((r) => setTimeout(r, 2000));
+        await new Promise((r) => setTimeout(r, 100));
         setDevices(data);
       } catch (err) {
         setError("Failed to fetch devices. Please try again later.");
@@ -58,9 +59,7 @@ const DeviceList = () => {
 
   return (
     <div className="p-6 bg-white">
-      <Typography variant="h4" className="font-bold text-gray-800 mb-4">
-        Devices
-      </Typography>
+      <DeviceHeader/>
       <DeviceFilterBar/>
       <div className="min-h-screen">
         <Typography variant="h5" className="font-bold text-gray-800 mb-4">
