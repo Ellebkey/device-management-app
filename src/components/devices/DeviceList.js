@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Typography, CircularProgress } from "@mui/material";
 import { Computer } from "@mui/icons-material";
+import DeviceFilterBar from "./DeviceFilterBar";
 import api from "../../providers/api";
 
 const DeviceList = () => {
@@ -12,6 +13,8 @@ const DeviceList = () => {
     const fetchDevices = async () => {
       try {
         const { data } = await api.get("/devices");
+        // Simulate delay to mimic API response time
+        await new Promise(r => setTimeout(r, 2000))
         setDevices(data);
       } catch (err) {
         setError("Failed to fetch devices. Please try again later.");
@@ -25,11 +28,12 @@ const DeviceList = () => {
 
   return (
 
-    <div className="p-6">
+    <div className="p-6 bg-white">
       <Typography variant="h4" className="font-bold text-gray-800 mb-4">
         Devices
       </Typography>
-      <div className="bg-gray-100 min-h-screen">
+      <DeviceFilterBar/>
+      <div className="min-h-screen">
         <Typography variant="h5" className="font-bold text-gray-800 mb-4">
           Device
         </Typography>
