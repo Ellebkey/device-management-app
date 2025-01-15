@@ -4,10 +4,13 @@ const DeviceContext = createContext();
 
 export const DeviceProvider = ({ children }) => {
   const [isAddDeviceModalOpen, setIsAddDeviceModalOpen] = useState(false);
+  const [isDeleteDeviceModalOpen, setIsDeleteDeviceModalOpen] = useState(false);
 
   const value = {
     isAddDeviceModalOpen,
-    setIsAddDeviceModalOpen
+    setIsAddDeviceModalOpen,
+    isDeleteDeviceModalOpen,
+    setIsDeleteDeviceModalOpen,
   };
 
   return (

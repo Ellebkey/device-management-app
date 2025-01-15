@@ -146,7 +146,7 @@ const AddDeviceModal = () => {
             Cancel
           </Button>
           <Button type="submit" variant="contained" color="primary" className="normal-case">
-            Add Device
+            Submit
           </Button>
         </DialogActions>
       </form>

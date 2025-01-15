@@ -10,9 +10,11 @@ import {
 import { Computer, MoreVert } from "@mui/icons-material";
 import DeviceHeader from "./DeviceHeader";
 import DeviceFilterBar from "./DeviceFilterBar";
+import { useDevices } from '../../context/DeviceContext';
 import api from "../../providers/api";
 
 const DeviceList = () => {
+  const { setIsDeleteDeviceModalOpen } = useDevices();
   const [devices, setDevices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -54,6 +56,7 @@ const DeviceList = () => {
 
   const handleDelete = () => {
     console.log("Delete device:", selectedDevice);
+    setIsDeleteDeviceModalOpen(true);
     handleMenuClose();
   };
 

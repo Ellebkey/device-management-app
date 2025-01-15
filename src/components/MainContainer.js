@@ -3,6 +3,7 @@ import DeviceList from './devices/DeviceList';
 import Header from "./shared/Header";
 import { DeviceProvider } from '../context/DeviceContext';
 import AddDeviceModal from './devices/AddDeviceModal';
+import DeleteDeviceModal from "./devices/DeleteDeviceModal";
 
 export default function MainContainer() {
   return (
@@ -12,6 +13,7 @@ export default function MainContainer() {
           <Header />
           <DeviceList />
           <AddDeviceModal />
+          <DeleteDeviceModal />
         </div>
       </div>
     </DeviceProvider>
