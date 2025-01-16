@@ -1,9 +1,8 @@
 import React from "react";
-import { TextField, MenuItem, IconButton, InputAdornment, Checkbox, Autocomplete } from "@mui/material";
-import { Refresh as RefreshIcon, Search as SearchIcon } from "@mui/icons-material";
+import { TextField, MenuItem, IconButton, InputAdornment, Checkbox, Autocomplete, Select} from "@mui/material";
 import { CheckBoxOutlineBlank, CheckBox } from "@mui/icons-material";
 import { useDevices } from "../../context/DeviceContext";
-import { DEVICE_TYPE_OPTIONS } from "../shared/constants";
+import { DEVICE_TYPE_OPTIONS, SORT_OPTIONS } from "../shared/constants";
 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />;
@@ -17,6 +16,8 @@ const DeviceFilterBar = () => {
     setSortBy,
     fetchDevices
   } = useDevices();
+
+  const placeHolderDevices = deviceTypes.length > 0 ? '' : 'Device Type: All';
 
   const handleSearchChange = (event) => {
     debouncedSetSearch(event.target.value);
@@ -46,7 +47,7 @@ const DeviceFilterBar = () => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon />
+                <img src="assets/images/search-icon.svg" alt="search" width={24} height={24}/>
               </InputAdornment>
             ),
           }}
@@ -61,6 +62,7 @@ const DeviceFilterBar = () => {
             deviceTypes.includes(opt.value)
           )}
           onChange={handleDeviceTypeChange}
+          size="small"
           renderOption={(props, option, {selected}) => {
             const {key, ...optionProps} = props;
             return (
@@ -70,6 +72,7 @@ const DeviceFilterBar = () => {
                   checkedIcon={checkedIcon}
                   style={{marginRight: 8}}
                   checked={selected}
+                  size="small"
                 />
                 {option.label}
               </li>
@@ -79,33 +82,38 @@ const DeviceFilterBar = () => {
             <TextField
               {...params}
               fullWidth
+              hiddenLabel
               variant="outlined"
               size="small"
-              label="Device Type"
-              placeholder="Select types"
+              placeholder={placeHolderDevices}
             />
           )}
         />
 
-        <TextField
-          select
-          fullWidth
-          variant="outlined"
-          size="small"
-          label="Sort by"
+        <Select
           value={sortBy}
           onChange={handleSortChange}
+          name="orderBy"
+          displayEmpty
+          size="small"
+          fullWidth
+          variant="outlined"
+          inputProps={{ 'aria-label': 'Without label' }}
         >
-          <MenuItem value="hdd-desc">HDD Capacity (Descending)</MenuItem>
-          <MenuItem value="hdd-asc">HDD Capacity (Ascending)</MenuItem>
-          <MenuItem value="name-asc">Name (A-Z)</MenuItem>
-          <MenuItem value="name-desc">Name (Z-A)</MenuItem>
-        </TextField>
+          {SORT_OPTIONS.map((sortType) => (
+            <MenuItem
+              key={sortType.label}
+              value={sortType.value}
+            >
+              Sorted By: {sortType.label}
+            </MenuItem>
+          ))}
+        </Select>
       </div>
 
       <div className="flex w-1/4 justify-end">
         <IconButton onClick={handleRefresh}>
-          <RefreshIcon />
+          <img src="assets/images/refresh-icon.svg" alt="refresh" width={24} height={24}/>
         </IconButton>
       </div>
     </div>

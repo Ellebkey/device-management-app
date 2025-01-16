@@ -45,10 +45,18 @@ const DeleteDeviceModal = () => {
           </DialogContent>
 
           <DialogActions className="p-4">
-            <Button onClick={handleClose} className="normal-case">
+            <Button
+              onClick={handleClose}
+              variant="outlined"
+              style={{color: '#211F33', borderColor: '#48446940', textTransform: 'none'}}
+            >
               Cancel
             </Button>
-            <Button onClick={handleSubmit} variant="contained" color="error" className="normal-case">
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+              color="error"
+              style={{textTransform: 'none'}}>
               Delete
             </Button>
           </DialogActions>

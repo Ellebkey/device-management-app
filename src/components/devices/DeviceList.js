@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  Typography,
-  CircularProgress,
-  IconButton,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import { Card, Typography, CircularProgress, IconButton, Menu, MenuItem } from "@mui/material";
 import { Computer, MoreVert } from "@mui/icons-material";
 import DeviceHeader from "./DeviceHeader";
 import DeviceFilterBar from "./DeviceFilterBar";
@@ -44,12 +37,25 @@ const DeviceList = () => {
     handleMenuClose();
   };
 
+  const getDeviceIcon = (device) => {
+    switch (device.type) {
+      case 'WINDOWS':
+        return <img src="assets/images/windows-icon.svg" alt="windows" width={24} height={24}/>
+      case 'MAC':
+        return <img src="assets/images/mac-icon.svg" alt="mac" width={24} height={24}/>
+      case 'LINUX':
+        return <img src="assets/images/linux-icon.svg" alt="linux" width={24} height={24}/>
+      default:
+        return <Computer className="text-gray-900"/>;
+    }
+  }
+
   return (
     <div className="p-6 bg-white">
       <DeviceHeader/>
       <DeviceFilterBar/>
       <div className="min-h-screen">
-        <Typography variant="h5" className="font-bold text-gray-800 mb-4">
+        <Typography variant="h5" className="font-bold text-gray-800 mb-4 px-4">
           Device
         </Typography>
 
@@ -66,31 +72,26 @@ const DeviceList = () => {
         )}
 
         {!loading && !error && (
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-200 border-t-2">
             {devices.map((device, index) => (
               <Card
                 key={index}
                 className="p-4 rounded-none shadow-none flex justify-between items-center group hover:bg-gray-100 transition"
                 elevation={0}
               >
-                <div className="flex items-center">
-                  <div className="mr-2">
-                    <Computer className="text-gray-500" />
-                  </div>
-                  <div>
-                    <Typography
-                      variant="subtitle1"
-                      className="font-bold text-gray-900"
-                    >
-                      {device.system_name}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      className="text-gray-600 mt-1"
-                    >
-                      {device.type} workstation - {device.hdd_capacity} GB
+                <div className="flex flex-col">
+                  <div className="flex items-center">
+                    <div className="mr-2">
+                      {getDeviceIcon(device)}
+                    </div>
+                    <Typography variant="subtitle1" className="font-bold">
+                      <span className="text-gray-900">{device.system_name}</span>
                     </Typography>
                   </div>
+
+                  <Typography variant="body2" className="text-gray-600 mt-1">
+                    <span className="capitalize">{device.type}</span> workstation - {device.hdd_capacity} GB
+                  </Typography>
                 </div>
 
                 <div className="opacity-0 group-hover:opacity-100 transition">
@@ -100,7 +101,7 @@ const DeviceList = () => {
                     aria-haspopup="true"
                     onClick={(event) => handleMenuOpen(event, device)}
                   >
-                    <MoreVert />
+                    <MoreVert/>
                   </IconButton>
                 </div>
               </Card>
@@ -114,7 +115,7 @@ const DeviceList = () => {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          <MenuItem onClick={handleUpdate}>Edit</MenuItem>
+          <MenuItem style={{width: '120px'}} onClick={handleUpdate}>Edit</MenuItem>
           <MenuItem
             onClick={handleDelete}
           >

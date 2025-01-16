@@ -132,7 +132,7 @@ const AddDeviceModal = () => {
           <div className="space-y-4 mt-2">
             <div>
               <Typography variant="subtitle2" className="mb-1 text-gray-700">
-                System Name
+                System Name *
               </Typography>
               <TextField
                 hiddenLabel
@@ -149,7 +149,7 @@ const AddDeviceModal = () => {
 
             <div>
               <Typography variant="subtitle2" className="mb-1 text-gray-700">
-                Device Type
+                Device Type *
               </Typography>
               <FormControl fullWidth error={!!errors.type} variant="filled">
                 <Select
@@ -175,7 +175,7 @@ const AddDeviceModal = () => {
 
             <div>
               <Typography variant="subtitle2" className="mb-1 text-gray-700">
-                HDD Capacity (GB)
+                HDD Capacity (GB) *
               </Typography>
               <TextField
                 hiddenLabel
@@ -193,11 +193,20 @@ const AddDeviceModal = () => {
           </div>
         </DialogContent>
 
-        <DialogActions className="p-4">
-          <Button onClick={handleClose} className="normal-case">
+        <DialogActions className="p-2">
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            style={{color: '#337AB7', borderColor: '#48446940', textTransform: 'none'}}
+          >
             Cancel
           </Button>
-          <Button type="submit" variant="contained" color="primary" className="normal-case">
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{backgroundColor: '#337AB7', textTransform: 'none'}}
+          >
             {isEditing ? 'Update' : 'Submit'}
           </Button>
         </DialogActions>

@@ -15,7 +15,7 @@ const DeviceHeader = () => {
         variant="contained"
         color="primary"
         startIcon={<Add />}
-        className="text-white"
+        style={{backgroundColor: '#337AB7', textTransform: 'none'}}
         onClick={() => setIsAddDeviceModalOpen(true)}
       >
         <span className="normal-case">Add device</span>
