@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDevices } from '../../context/DeviceContext';
-import { devicesTypes } from "../shared/constants";
+import { DEVICE_TYPE_OPTIONS } from "../shared/constants";
 
 const AddDeviceModal = () => {
   const {
@@ -160,9 +160,14 @@ const AddDeviceModal = () => {
                   variant="outlined"
                   inputProps={{ 'aria-label': 'Without label' }}
                 >
-                  <MenuItem value={devicesTypes.WINDOWS}>Windows Workstation</MenuItem>
-                  <MenuItem value={devicesTypes.MAC}>Mac Workstation</MenuItem>
-                  <MenuItem value={devicesTypes.LINUX}>Linux Workstation</MenuItem>
+                  {DEVICE_TYPE_OPTIONS.map((deviceType) => (
+                    <MenuItem
+                      key={deviceType.label}
+                      value={deviceType.value}
+                    >
+                      {deviceType.label} Workstation
+                    </MenuItem>
+                  ))}
                 </Select>
                 <FormHelperText>{errors.type}</FormHelperText>
               </FormControl>

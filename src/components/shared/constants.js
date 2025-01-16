@@ -1,5 +1,5 @@
-export const devicesTypes = {
-  MAC: 'MAC',
-  LINUX: 'LINUX',
-  WINDOWS: 'WINDOWS',
-}
+export const DEVICE_TYPE_OPTIONS = [
+  { label: 'Windows', value: 'WINDOWS' },
+  { label: 'Mac', value: 'MAC' },
+  { label: 'Linux', value: 'LINUX' },
+];

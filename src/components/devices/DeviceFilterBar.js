@@ -1,14 +1,18 @@
 import React from "react";
-import { TextField, MenuItem, IconButton, InputAdornment } from "@mui/material";
+import { TextField, MenuItem, IconButton, InputAdornment, Checkbox, Autocomplete } from "@mui/material";
 import { Refresh as RefreshIcon, Search as SearchIcon } from "@mui/icons-material";
-import { devicesTypes } from "../shared/constants";
-import { useDevices } from '../../context/DeviceContext';
+import { CheckBoxOutlineBlank, CheckBox } from "@mui/icons-material";
+import { useDevices } from "../../context/DeviceContext";
+import { DEVICE_TYPE_OPTIONS } from "../shared/constants";
+
+const icon = <CheckBoxOutlineBlank fontSize="small" />;
+const checkedIcon = <CheckBox fontSize="small" />;
 
 const DeviceFilterBar = () => {
   const {
     debouncedSetSearch,
-    deviceType,
-    setDeviceType,
+    deviceTypes,
+    setDeviceTypes,
     sortBy,
     setSortBy,
     fetchDevices
@@ -18,8 +22,8 @@ const DeviceFilterBar = () => {
     debouncedSetSearch(event.target.value);
   };
 
-  const handleTypeChange = (event) => {
-    setDeviceType(event.target.value);
+  const handleDeviceTypeChange = (event, newValue) => {
+    setDeviceTypes(newValue.map((option) => option.value));
   };
 
   const handleSortChange = (event) => {
@@ -31,9 +35,10 @@ const DeviceFilterBar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center pb-4">
-      <div className="flex items-center space-x-4">
+    <div className="flex items-center pb-4">
+      <div className="grid grid-cols-3 gap-4 w-3/4">
         <TextField
+          fullWidth
           variant="outlined"
           size="small"
           placeholder="Search"
@@ -45,32 +50,51 @@ const DeviceFilterBar = () => {
               </InputAdornment>
             ),
           }}
-          className="w-64"
+        />
+
+        <Autocomplete
+          multiple
+          disableCloseOnSelect
+          options={DEVICE_TYPE_OPTIONS}
+          getOptionLabel={(option) => option.label}
+          value={DEVICE_TYPE_OPTIONS.filter((opt) =>
+            deviceTypes.includes(opt.value)
+          )}
+          onChange={handleDeviceTypeChange}
+          renderOption={(props, option, {selected}) => {
+            const {key, ...optionProps} = props;
+            return (
+              <li key={key} {...optionProps}>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  style={{marginRight: 8}}
+                  checked={selected}
+                />
+                {option.label}
+              </li>
+            );
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              fullWidth
+              variant="outlined"
+              size="small"
+              label="Device Type"
+              placeholder="Select types"
+            />
+          )}
         />
 
         <TextField
           select
-          variant="outlined"
-          size="small"
-          label="Device Type"
-          value={deviceType}
-          onChange={handleTypeChange}
-          className="w-40"
-        >
-          <MenuItem value="all">All</MenuItem>
-          <MenuItem value={devicesTypes.WINDOWS}>Windows</MenuItem>
-          <MenuItem value={devicesTypes.MAC}>Mac</MenuItem>
-          <MenuItem value={devicesTypes.LINUX}>Linux</MenuItem>
-        </TextField>
-
-        <TextField
-          select
+          fullWidth
           variant="outlined"
           size="small"
           label="Sort by"
           value={sortBy}
           onChange={handleSortChange}
-          className="w-56"
         >
           <MenuItem value="hdd-desc">HDD Capacity (Descending)</MenuItem>
           <MenuItem value="hdd-asc">HDD Capacity (Ascending)</MenuItem>
@@ -79,9 +103,11 @@ const DeviceFilterBar = () => {
         </TextField>
       </div>
 
-      <IconButton onClick={handleRefresh}>
-        <RefreshIcon />
-      </IconButton>
+      <div className="flex w-1/4 justify-end">
+        <IconButton onClick={handleRefresh}>
+          <RefreshIcon />
+        </IconButton>
+      </div>
     </div>
   );
 };

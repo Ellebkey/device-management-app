@@ -13,7 +13,7 @@ export const DeviceProvider = ({ children }) => {
   const [isDeleteDeviceModalOpen, setIsDeleteDeviceModalOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [deviceType, setDeviceType] = useState('all');
+  const [deviceTypes, setDeviceTypes] = useState([]);
   const [sortBy, setSortBy] = useState('name-asc');
 
   const fetchDevices = useCallback(async () => {
@@ -39,8 +39,8 @@ export const DeviceProvider = ({ children }) => {
       );
     }
 
-    if (deviceType !== 'all') {
-      result = result.filter(device => device.type === deviceType);
+    if (deviceTypes.length > 0) {
+      result = result.filter((device) => deviceTypes.includes(device.type));
     }
 
     switch (sortBy) {
@@ -61,7 +61,7 @@ export const DeviceProvider = ({ children }) => {
     }
 
     return result;
-  }, [devices, searchTerm, deviceType, sortBy]);
+  }, [devices, searchTerm, deviceTypes, sortBy]);
 
   const debouncedSetSearch = useCallback(
     _.debounce((value) => {
@@ -124,8 +124,8 @@ export const DeviceProvider = ({ children }) => {
     setCurrentDevice,
     searchTerm,
     debouncedSetSearch,
-    deviceType,
-    setDeviceType,
+    deviceTypes,
+    setDeviceTypes,
     sortBy,
     setSortBy,
   };
