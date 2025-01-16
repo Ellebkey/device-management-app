@@ -1,6 +1,7 @@
 import React from "react";
 import { TextField, MenuItem, IconButton, InputAdornment } from "@mui/material";
 import { Refresh as RefreshIcon, Search as SearchIcon } from "@mui/icons-material";
+import { devicesTypes } from "../shared/constants";
 
 const DeviceFilterBar = () => {
   return (
@@ -28,9 +29,9 @@ const DeviceFilterBar = () => {
           className="w-40"
         >
           <MenuItem value="all">All</MenuItem>
-          <MenuItem value="windows">Windows</MenuItem>
-          <MenuItem value="mac">Mac</MenuItem>
-          <MenuItem value="linux">Linux</MenuItem>
+          <MenuItem value={devicesTypes.WINDOWS}>Windows</MenuItem>
+          <MenuItem value={devicesTypes.MAC}>Mac</MenuItem>
+          <MenuItem value={devicesTypes.LINUX}>Linux</MenuItem>
         </TextField>
 
         <TextField

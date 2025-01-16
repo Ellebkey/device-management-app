@@ -3,6 +3,7 @@ import React, { createContext, useState, useContext } from 'react';
 const DeviceContext = createContext();
 
 export const DeviceProvider = ({ children }) => {
+  const [currentDevice, setCurrentDevice] = useState(null);
   const [isAddDeviceModalOpen, setIsAddDeviceModalOpen] = useState(false);
   const [isDeleteDeviceModalOpen, setIsDeleteDeviceModalOpen] = useState(false);
 
@@ -11,6 +12,8 @@ export const DeviceProvider = ({ children }) => {
     setIsAddDeviceModalOpen,
     isDeleteDeviceModalOpen,
     setIsDeleteDeviceModalOpen,
+    currentDevice,
+    setCurrentDevice,
   };
 
   return (

@@ -11,7 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useDevices } from '../../context/DeviceContext';
 
 const DeleteDeviceModal = () => {
-  const { isDeleteDeviceModalOpen, setIsDeleteDeviceModalOpen } = useDevices();
+  const { isDeleteDeviceModalOpen, setIsDeleteDeviceModalOpen, currentDevice } = useDevices();
 
   const handleClose = () => {
     setIsDeleteDeviceModalOpen(false);
@@ -33,22 +33,26 @@ const DeleteDeviceModal = () => {
         </IconButton>
       </div>
 
-      <DialogContent>
-        <div className="space-y-4 mt-2">
-          <Typography variant="subtitle2" className="mb-1 text-gray-700">
-            You are about to delete the device DESKTOP-0VCBIFF. This action cannot be undone.
-          </Typography>
-        </div>
-      </DialogContent>
+      {currentDevice && (
+        <>
+          <DialogContent>
+            <div className="space-y-4 mt-2">
+              <Typography variant="subtitle2" className="mb-1 text-gray-700">
+                You are about to delete the device {currentDevice.system_name}. This action cannot be undone.
+              </Typography>
+            </div>
+          </DialogContent>
 
-      <DialogActions className="p-4">
-        <Button onClick={handleClose} className="normal-case">
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit} type="submit" variant="contained" color="error" className="normal-case">
-          Delete
-        </Button>
-      </DialogActions>
+          <DialogActions className="p-4">
+            <Button onClick={handleClose} className="normal-case">
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit} variant="contained" color="error" className="normal-case">
+              Delete
+            </Button>
+          </DialogActions>
+        </>
+      )}
     </Dialog>
   );
 };

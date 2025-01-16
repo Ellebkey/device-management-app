@@ -14,7 +14,7 @@ import { useDevices } from '../../context/DeviceContext';
 import api from "../../providers/api";
 
 const DeviceList = () => {
-  const { setIsDeleteDeviceModalOpen } = useDevices();
+  const { setIsDeleteDeviceModalOpen, setIsAddDeviceModalOpen, setCurrentDevice } = useDevices();
   const [devices, setDevices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -50,12 +50,13 @@ const DeviceList = () => {
   };
 
   const handleUpdate = () => {
-    console.log("Update device:", selectedDevice);
+    setCurrentDevice(selectedDevice);
+    setIsAddDeviceModalOpen(true);
     handleMenuClose();
   };
 
   const handleDelete = () => {
-    console.log("Delete device:", selectedDevice);
+    setCurrentDevice(selectedDevice);
     setIsDeleteDeviceModalOpen(true);
     handleMenuClose();
   };

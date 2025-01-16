@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -14,15 +14,40 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDevices } from '../../context/DeviceContext';
+import api from '../../providers/api';
+import { devicesTypes } from "../shared/constants";
 
 const AddDeviceModal = () => {
-  const { isAddDeviceModalOpen, setIsAddDeviceModalOpen } = useDevices();
+  const {
+    isAddDeviceModalOpen,
+    setIsAddDeviceModalOpen,
+    currentDevice,
+    setCurrentDevice,
+  } = useDevices();
+
   const [formData, setFormData] = useState({
     system_name: '',
     type: '',
     hdd_capacity: '',
   });
   const [errors, setErrors] = useState({});
+  const isEditing = Boolean(currentDevice);
+
+  useEffect(() => {
+    if (currentDevice) {
+      setFormData({
+        system_name: currentDevice.system_name,
+        type: currentDevice.type,
+        hdd_capacity: currentDevice.hdd_capacity,
+      });
+    } else {
+      setFormData({
+        system_name: '',
+        type: '',
+        hdd_capacity: '',
+      });
+    }
+  }, [currentDevice]);
 
   const handleClose = () => {
     setIsAddDeviceModalOpen(false);
@@ -32,6 +57,7 @@ const AddDeviceModal = () => {
       hdd_capacity: '',
     });
     setErrors({});
+    setCurrentDevice(null);
   };
 
   const validateForm = () => {
@@ -52,6 +78,22 @@ const AddDeviceModal = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
+
+    try {
+      if (isEditing) {
+        // Update existing device
+        await api.put(`/devices/${currentDevice.id}`, formData);
+        console.log('Device updated successfully');
+      } else {
+        // Create new device
+        await api.post('/devices', formData);
+        console.log('Device created successfully');
+      }
+
+      handleClose();
+    } catch (error) {
+      console.error('Error saving device:', error);
+    }
   };
 
   const handleChange = (e) => {
@@ -65,16 +107,20 @@ const AddDeviceModal = () => {
         ...prev,
         [name]: '',
       }));
-      console.log(errors)
     }
   };
 
   return (
-    <Dialog open={isAddDeviceModalOpen} onClose={handleClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={isAddDeviceModalOpen}
+      onClose={handleClose}
+      maxWidth="sm"
+      fullWidth
+    >
       <form onSubmit={handleSubmit}>
         <div className="flex justify-between items-center px-4 pt-4">
           <Typography variant="h6" className="font-bold">
-            Add Device
+            {isEditing ? 'Edit Device' : 'Add Device'}
           </Typography>
           <IconButton onClick={handleClose} size="small">
             <CloseIcon />
@@ -113,9 +159,9 @@ const AddDeviceModal = () => {
                   variant="outlined"
                   inputProps={{ 'aria-label': 'Without label' }}
                 >
-                  <MenuItem value="windows">Windows Workstation</MenuItem>
-                  <MenuItem value="mac">Mac Workstation</MenuItem>
-                  <MenuItem value="linux">Linux Workstation</MenuItem>
+                  <MenuItem value={devicesTypes.WINDOWS}>Windows Workstation</MenuItem>
+                  <MenuItem value={devicesTypes.MAC}>Mac Workstation</MenuItem>
+                  <MenuItem value={devicesTypes.LINUX}>Linux Workstation</MenuItem>
                 </Select>
                 <FormHelperText>{errors.type}</FormHelperText>
               </FormControl>
@@ -146,7 +192,7 @@ const AddDeviceModal = () => {
             Cancel
           </Button>
           <Button type="submit" variant="contained" color="primary" className="normal-case">
-            Submit
+            {isEditing ? 'Update' : 'Submit'}
           </Button>
         </DialogActions>
       </form>
