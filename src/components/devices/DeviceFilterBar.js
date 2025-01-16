@@ -2,8 +2,34 @@ import React from "react";
 import { TextField, MenuItem, IconButton, InputAdornment } from "@mui/material";
 import { Refresh as RefreshIcon, Search as SearchIcon } from "@mui/icons-material";
 import { devicesTypes } from "../shared/constants";
+import { useDevices } from '../../context/DeviceContext';
 
 const DeviceFilterBar = () => {
+  const {
+    debouncedSetSearch,
+    deviceType,
+    setDeviceType,
+    sortBy,
+    setSortBy,
+    fetchDevices
+  } = useDevices();
+
+  const handleSearchChange = (event) => {
+    debouncedSetSearch(event.target.value);
+  };
+
+  const handleTypeChange = (event) => {
+    setDeviceType(event.target.value);
+  };
+
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+  };
+
+  const handleRefresh = () => {
+    fetchDevices();
+  };
+
   return (
     <div className="flex justify-between items-center pb-4">
       <div className="flex items-center space-x-4">
@@ -11,6 +37,7 @@ const DeviceFilterBar = () => {
           variant="outlined"
           size="small"
           placeholder="Search"
+          onChange={handleSearchChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -26,6 +53,8 @@ const DeviceFilterBar = () => {
           variant="outlined"
           size="small"
           label="Device Type"
+          value={deviceType}
+          onChange={handleTypeChange}
           className="w-40"
         >
           <MenuItem value="all">All</MenuItem>
@@ -39,6 +68,8 @@ const DeviceFilterBar = () => {
           variant="outlined"
           size="small"
           label="Sort by"
+          value={sortBy}
+          onChange={handleSortChange}
           className="w-56"
         >
           <MenuItem value="hdd-desc">HDD Capacity (Descending)</MenuItem>
@@ -48,7 +79,7 @@ const DeviceFilterBar = () => {
         </TextField>
       </div>
 
-      <IconButton>
+      <IconButton onClick={handleRefresh}>
         <RefreshIcon />
       </IconButton>
     </div>

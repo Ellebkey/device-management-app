@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext, useCallback } from 'react';
+import React, { createContext, useState, useContext, useCallback, useMemo } from 'react';
 import api from '../providers/api';
+import _ from 'lodash';
 
 const DeviceContext = createContext();
 
@@ -11,11 +12,14 @@ export const DeviceProvider = ({ children }) => {
   const [isAddDeviceModalOpen, setIsAddDeviceModalOpen] = useState(false);
   const [isDeleteDeviceModalOpen, setIsDeleteDeviceModalOpen] = useState(false);
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [deviceType, setDeviceType] = useState('all');
+  const [sortBy, setSortBy] = useState('name-asc');
+
   const fetchDevices = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await api.get("/devices");
-      console.log(data);
       setDevices(data);
       setError(null);
     } catch (err) {
@@ -24,6 +28,47 @@ export const DeviceProvider = ({ children }) => {
       setLoading(false);
     }
   }, []);
+
+  const filteredDevices = useMemo(() => {
+    let result = [...devices];
+
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      result = result.filter(device =>
+        device.system_name.toLowerCase().includes(searchLower)
+      );
+    }
+
+    if (deviceType !== 'all') {
+      result = result.filter(device => device.type === deviceType);
+    }
+
+    switch (sortBy) {
+      case 'hdd-desc':
+        result = _.orderBy(result, ['hdd_capacity'], ['desc']);
+        break;
+      case 'hdd-asc':
+        result = _.orderBy(result, ['hdd_capacity'], ['asc']);
+        break;
+      case 'name-desc':
+        result = _.orderBy(result, ['system_name'], ['desc']);
+        break;
+      case 'name-asc':
+        result = _.orderBy(result, ['system_name'], ['asc']);
+        break;
+      default:
+        break;
+    }
+
+    return result;
+  }, [devices, searchTerm, deviceType, sortBy]);
+
+  const debouncedSetSearch = useCallback(
+    _.debounce((value) => {
+      setSearchTerm(value);
+    }, 300),
+    []
+  );
 
   const addDevice = useCallback(async (deviceData) => {
     try {
@@ -64,7 +109,7 @@ export const DeviceProvider = ({ children }) => {
   }, []);
 
   const value = {
-    devices,
+    devices: filteredDevices,
     loading,
     error,
     fetchDevices,
@@ -77,6 +122,12 @@ export const DeviceProvider = ({ children }) => {
     setIsDeleteDeviceModalOpen,
     currentDevice,
     setCurrentDevice,
+    searchTerm,
+    debouncedSetSearch,
+    deviceType,
+    setDeviceType,
+    sortBy,
+    setSortBy,
   };
 
   return (
