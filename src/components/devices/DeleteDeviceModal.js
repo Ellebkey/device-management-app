@@ -11,7 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useDevices } from '../../context/DeviceContext';
 
 const DeleteDeviceModal = () => {
-  const { isDeleteDeviceModalOpen, setIsDeleteDeviceModalOpen, currentDevice } = useDevices();
+  const { isDeleteDeviceModalOpen, setIsDeleteDeviceModalOpen, currentDevice, deleteDevice } = useDevices();
 
   const handleClose = () => {
     setIsDeleteDeviceModalOpen(false);
@@ -19,6 +19,7 @@ const DeleteDeviceModal = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    deleteDevice(currentDevice.id);
     setIsDeleteDeviceModalOpen(false);
   };
 
@@ -38,7 +39,7 @@ const DeleteDeviceModal = () => {
           <DialogContent>
             <div className="space-y-4 mt-2">
               <Typography variant="subtitle2" className="mb-1 text-gray-700">
-                You are about to delete the device {currentDevice.system_name}. This action cannot be undone.
+                You are about to delete the device <span className="font-bold">{currentDevice.system_name}</span>. This action cannot be undone.
               </Typography>
             </div>
           </DialogContent>

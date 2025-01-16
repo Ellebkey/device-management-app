@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDevices } from '../../context/DeviceContext';
-import api from '../../providers/api';
 import { devicesTypes } from "../shared/constants";
 
 const AddDeviceModal = () => {
@@ -23,6 +22,8 @@ const AddDeviceModal = () => {
     setIsAddDeviceModalOpen,
     currentDevice,
     setCurrentDevice,
+    addDevice,
+    updateDevice
   } = useDevices();
 
   const [formData, setFormData] = useState({
@@ -82,11 +83,11 @@ const AddDeviceModal = () => {
     try {
       if (isEditing) {
         // Update existing device
-        await api.put(`/devices/${currentDevice.id}`, formData);
+        updateDevice(currentDevice.id, formData);
         console.log('Device updated successfully');
       } else {
         // Create new device
-        await api.post('/devices', formData);
+        addDevice(formData);
         console.log('Device created successfully');
       }
 

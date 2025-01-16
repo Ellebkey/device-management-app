@@ -11,32 +11,15 @@ import { Computer, MoreVert } from "@mui/icons-material";
 import DeviceHeader from "./DeviceHeader";
 import DeviceFilterBar from "./DeviceFilterBar";
 import { useDevices } from '../../context/DeviceContext';
-import api from "../../providers/api";
 
 const DeviceList = () => {
-  const { setIsDeleteDeviceModalOpen, setIsAddDeviceModalOpen, setCurrentDevice } = useDevices();
-  const [devices, setDevices] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { devices, loading, error, fetchDevices, setIsDeleteDeviceModalOpen, setIsAddDeviceModalOpen, setCurrentDevice } = useDevices();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedDevice, setSelectedDevice] = useState(null);
 
   useEffect(() => {
-    const fetchDevices = async () => {
-      try {
-        const { data } = await api.get("/devices");
-        // Simulate delay to mimic API response time
-        await new Promise((r) => setTimeout(r, 100));
-        setDevices(data);
-      } catch (err) {
-        setError("Failed to fetch devices. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchDevices();
-  }, []);
+  }, [fetchDevices]);
 
   // Handlers for menu
   const handleMenuOpen = (event, device) => {
