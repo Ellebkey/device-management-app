@@ -1,29 +1,58 @@
-# N
+# Device Management Application (NinjaOne)
 
-This is an app that helps users compare the commit activity of public GitHub repositories. It aims to assist users in determining which open-source library is the safest bet for their project.
+A React-based web application for managing devices including creation, editing, deletion, filtering, and sorting capabilities.
 
-## Tech Stack
+## Prerequisites
 
-- React.js
-- TailwindCSS
-- Nivo for graphics charts
+- Node.js (v20 or higher)
+- npm (v10 or higher)
+- A running backend server (default: http://localhost:3000)
 
-## How to Run the App
+## Getting Started
 
-1. Clone the repository
-2. Navigate to the project directory
-3. Create an .env file with REACT_APP_API_KEY and `your_token`
-4. Run `npm install` to install dependencies
-5. Run `npm start` to start the development server
-6. Open `http://localhost:3000` in your browser
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd device-management-app
+```
 
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Configure api:
+- Check `src/providers/api.js` for API configuration
+- Default API URL is http://localhost:3000/
+
+4. Start the development server:
+```bash
+npm start
+```
+
+The application should now be running at http://localhost:3001
+
+## Scripts
+
+- `npm start`: Runs the app in development mode
+- `npm test`: Launches the test runner
+- `npm run build`: Builds the app for production
+- `npm run eject`: Ejects from Create React App
 
 ## Project Structure
 
-- `MainContainer.js`: The main container that houses other components and manages state.
-- `RepositoryCommitGraph.js`: Component to render the commit graph.
-- `RepositoryAutocomplete.js`: Component for the autocomplete search bar.
-- `SelectedRepositoryList.js`: Component to display the list of selected repositories.
+```
+src/
+├── components/    # React components
+├── context/       # Context providers
+├── providers/     # API and service providers
+public/
+└── assets/        # Static assets
+```
 
-## Live demo
-[link](https://commit.joelbarranco.io/)
+## Features
+
+- Device Management (Create, Read, Update, Delete)
+- Search and Filter Capabilities
+- Sorting Options
+- Real-time Updates

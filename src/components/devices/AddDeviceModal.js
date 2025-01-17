@@ -123,7 +123,7 @@ const AddDeviceModal = () => {
           <Typography variant="h6" className="font-bold">
             {isEditing ? 'Edit Device' : 'Add Device'}
           </Typography>
-          <IconButton onClick={handleClose} size="small">
+          <IconButton onClick={handleClose} size="small" data-testid="close-button">
             <CloseIcon />
           </IconButton>
         </div>
@@ -144,6 +144,7 @@ const AddDeviceModal = () => {
                 variant="outlined"
                 error={!!errors.system_name}
                 helperText={errors.system_name}
+                inputProps={{ 'data-testid': 'system-name-input' }}
               />
             </div>
 
@@ -151,19 +152,22 @@ const AddDeviceModal = () => {
               <Typography variant="subtitle2" className="mb-1 text-gray-700">
                 Device Type *
               </Typography>
-              <FormControl fullWidth error={!!errors.type} variant="filled">
+              <FormControl id="type-input" fullWidth error={!!errors.type} variant="filled">
                 <Select
                   value={formData.type}
                   onChange={handleChange}
                   name="type"
                   displayEmpty
                   variant="outlined"
-                  inputProps={{ 'aria-label': 'Without label' }}
+                  inputProps={{ 'aria-label': 'aria-device-type-select' }}
+                  data-testid ="device-type-select"
+                  MenuProps={{ disablePortal: true }}
                 >
                   {DEVICE_TYPE_OPTIONS.map((deviceType) => (
                     <MenuItem
-                      key={deviceType.label}
+                      key={deviceType.value}
                       value={deviceType.value}
+                      data-testid={deviceType.value}
                     >
                       {deviceType.label} Workstation
                     </MenuItem>
@@ -188,6 +192,7 @@ const AddDeviceModal = () => {
                 variant="outlined"
                 error={!!errors.hdd_capacity}
                 helperText={errors.hdd_capacity}
+                inputProps={{ 'data-testid': 'hdd-capacity-input' }}
               />
             </div>
           </div>
@@ -206,6 +211,7 @@ const AddDeviceModal = () => {
             variant="contained"
             color="primary"
             style={{backgroundColor: '#337AB7', textTransform: 'none'}}
+            data-testid="submit-button"
           >
             {isEditing ? 'Update' : 'Submit'}
           </Button>
