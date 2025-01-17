@@ -25,21 +25,22 @@ const DeleteDeviceModal = () => {
 
   return (
     <Dialog open={isDeleteDeviceModalOpen} onClose={handleClose} maxWidth="sm" fullWidth>
-      <div className="flex justify-between items-center px-4 pt-4">
-        <Typography variant="h6" className="font-bold">
-          Delete device?
-        </Typography>
-        <IconButton onClick={handleClose} size="small">
-          <CloseIcon />
-        </IconButton>
-      </div>
-
       {currentDevice && (
         <>
+          <div className="flex justify-between items-center px-4 pt-4">
+            <Typography variant="h6" className="font-bold">
+              Delete device?
+            </Typography>
+            <IconButton onClick={handleClose} size="small" data-testid="close-button">
+              <CloseIcon/>
+            </IconButton>
+          </div>
+
           <DialogContent>
             <div className="space-y-4 mt-2">
               <Typography variant="subtitle2" className="mb-1 text-gray-700">
-                You are about to delete the device <span className="font-bold">{currentDevice.system_name}</span>. This action cannot be undone.
+                You are about to delete the device <span className="font-bold">{currentDevice.system_name}</span>. This
+                action cannot be undone.
               </Typography>
             </div>
           </DialogContent>
