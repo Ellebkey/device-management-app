@@ -13,6 +13,7 @@ import {
   FormHelperText,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { toast } from 'react-hot-toast';
 import { useDevices } from '../../context/DeviceContext';
 import { DEVICE_TYPE_OPTIONS } from "../shared/constants";
 
@@ -83,12 +84,14 @@ const AddDeviceModal = () => {
     try {
       if (isEditing) {
         // Update existing device
-        updateDevice(currentDevice.id, formData);
+        await updateDevice(currentDevice.id, formData);
         console.log('Device updated successfully');
+        toast.success('Device updated successfully!');
       } else {
         // Create new device
-        addDevice(formData);
+        await addDevice(formData);
         console.log('Device created successfully');
+        toast.success('Device created successfully!');
       }
 
       handleClose();

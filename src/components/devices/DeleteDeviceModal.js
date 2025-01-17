@@ -8,6 +8,7 @@ import {
   IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { toast } from 'react-hot-toast';
 import { useDevices } from '../../context/DeviceContext';
 
 const DeleteDeviceModal = () => {
@@ -19,7 +20,8 @@ const DeleteDeviceModal = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    deleteDevice(currentDevice.id);
+    await deleteDevice(currentDevice.id);
+    toast.success('Successfully deleted the device!');
     setIsDeleteDeviceModalOpen(false);
   };
 
