@@ -16,6 +16,29 @@ export const DeviceProvider = ({ children }) => {
   const [deviceTypes, setDeviceTypes] = useState([]);
   const [sortBy, setSortBy] = useState('name-asc');
 
+  const customSort = (sortBy, order = 'asc') => {
+    return (a, b) => {
+      let valueA = a[sortBy];
+      let valueB = b[sortBy];
+
+      if (sortBy === 'hdd_capacity') {
+        valueA = +valueA;
+        valueB = +valueB;
+      }
+
+      if (typeof valueA === 'string') {
+        valueA = valueA.toLowerCase();
+        valueB = valueB.toLowerCase();
+      }
+
+      const direction = order === 'desc' ? -1 : 1;
+
+      if (valueA < valueB) return -1 * direction;
+      if (valueA > valueB) return 1 * direction;
+      return 0;
+    };
+  };
+
   const fetchDevices = useCallback(async () => {
     try {
       setLoading(true);
@@ -45,16 +68,16 @@ export const DeviceProvider = ({ children }) => {
 
     switch (sortBy) {
       case 'hdd-desc':
-        result = _.orderBy(result, ['hdd_capacity'], ['desc']);
+        result = result.sort(customSort('hdd_capacity', 'desc'));
         break;
       case 'hdd-asc':
-        result = _.orderBy(result, ['hdd_capacity'], ['asc']);
+        result = result.sort(customSort('hdd_capacity', 'asc'));
         break;
       case 'name-desc':
-        result = _.orderBy(result, ['system_name'], ['desc']);
+        result = result.sort(customSort('system_name', 'desc'));
         break;
       case 'name-asc':
-        result = _.orderBy(result, ['system_name'], ['asc']);
+        result = result.sort(customSort('system_name', 'asc'));
         break;
       default:
         break;

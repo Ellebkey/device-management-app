@@ -98,7 +98,7 @@ const DeviceFilterBar = () => {
           size="small"
           fullWidth
           variant="outlined"
-          inputProps={{ 'aria-label': 'Without label' }}
+          inputProps={{ 'aria-label': 'sort-select' }}
         >
           {SORT_OPTIONS.map((sortType) => (
             <MenuItem
